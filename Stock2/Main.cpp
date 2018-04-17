@@ -75,14 +75,19 @@ int main(void)
 
 		switch (key)
 		{
+		//Press 'b' or 'B' to buy stock
 		case 'b':
 		case 'B':
 			buyMenu(companyOrder[order]);
 			break;
+
+		//Press 'v' or 'V' to see the list of stocks
 		case 'v':
 		case 'V':
 			showStockList();
 			break;
+
+		//Press 'esc' to pause game
 		case 27:
 			system("cls");
 			titleLine("일시 정지");
@@ -119,10 +124,14 @@ int main(void)
 			system("cls");
 			Sleep(100);
 			break;
+
+		//Press 's' or 'S' to sell some stock
 		case 's':
 		case 'S':
 			sellMenu();
 			break;
+
+		//Press 'e' or 'E' to save game
 		case 'E':
 		case 'e':
 			system("cls");
@@ -130,6 +139,8 @@ int main(void)
 			printf("\n 게임이 저장되었습니다.");
 			Sleep(300);
 			break;
+
+		//Press 'w' or 'W' to increase 'cnt' variable
 		case 'W':
 		case 'w':
 			if (timemode == 1)
@@ -139,18 +150,27 @@ int main(void)
 				Sleep(100);
 			}
 			break;
+
+		//Press 'i' or 'I' to see information of companies
 		case 'I':
 		case 'i':
 			showCompanyInfo();
 			break;
+
+		//Press '2' to increase 'order' variable
+		//If the 'order' variable increases, the cursor move down
 		case '2':
 			if (order < MAX_COMPANY - 1) order++;
 			drawNewspaper(companyOrder[order]);
 			break;
+
+		//Press '8' to decrease 'order' variable
+		//If the 'order' variable decreases, the cursor move up
 		case '8':
 			if (order > 0) order--;
 			drawNewspaper(companyOrder[order]);
 			break;
+
 		default:
 			break;
 		}
