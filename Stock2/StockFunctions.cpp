@@ -169,7 +169,7 @@ void loan(int lmoney)
 
 void interest()
 {
-	loanMoney += (loanMoney * 0.05);
+	loanMoney += (int)(loanMoney * 0.05);
 }
 
 void payback()
