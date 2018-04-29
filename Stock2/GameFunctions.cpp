@@ -239,8 +239,9 @@ void SellMenu(void)
 	int idx;
 	int numberOfStocks;
 	int listPage;
+	int profitOnSale;
 	char key;
-	Stock *find;
+	Stock *selectStock;
 
 	key = '\0';
 	listPage = idx = 1;
@@ -270,13 +271,17 @@ void SellMenu(void)
 		}
 		printf("\n 돌아가려면 Q를 누르세요.\n");
 		
-		find = FindStock(idx - 1);
-		if (find == NULL) {
+		selectStock = FindStock(idx - 1);
+		if (selectStock == NULL) {
 			system("cls");
 			return;
 		}	
-	
-		printf("\n [ 선택 주식 정보 ]\n\n 번호 : %d\n 회사 : %s\n 가격 : %d\n 현재 가격 : %d\n 매도 이익 : %d", idx, CompanyName[f->company], f->price, StockPrice[f->company], StockPrice[f->company] - f->price);
+		
+		profitOnSale = StockPrice[selectStock->company] - selectStock->price;
+		printf("\n [ 선택 주식 정보 ]\n\n 번호 : %d\n 회사 : %s\n 가격 : %d\n 현재 가격 : %d\n 매도 이익 : %d"
+			, idx					, CompanyName[selectStock->company]
+			, selectStock->price	, StockPrice[selectStock->company]
+			, profitOnSale);
 		
 		key = getch();
 		
@@ -312,7 +317,7 @@ void SellMenu(void)
 
 			case 'B':
 			case 'b':
-				sellStock(idx);
+				SellStock(idx);
 				break;
 		}
 		
