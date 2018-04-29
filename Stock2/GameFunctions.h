@@ -21,7 +21,7 @@ extern int month, day, hour, achour;
 extern char *Tips[MAX_TIP], *GoodNews[MAX_NEWS], *BadNews[MAX_NEWS];
 extern int days[12];
 
-extern int StockPrice[MAX_COMPANY], PrevStockPrice[MAX_COMPANY], Stocks, StockDeal, loanMoney;
+extern int StockPrice[MAX_COMPANY], prevStockPrice[MAX_COMPANY], Stocks, StockDeal, loanMoney;
 extern unsigned long Money;
 extern bool ifGood[MAX_COMPANY];
 extern char *CompanyName[MAX_COMPANY];

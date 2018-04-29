@@ -402,7 +402,7 @@ void loanMenu()
 	titleLine("대  출");
 	printf("\n 얼마를 대출받으시겠습니까?");
 	scanf("%d", &loanmoney);
-	loan(loanmoney);
+	Loan(loanmoney);
 
 	return;
 }

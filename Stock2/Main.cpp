@@ -19,15 +19,15 @@ int main(void)
 	//Copyright
 	StartLogo();
 
-	PrintMainMenu();
-	scanf("%d", &menu);
-
 	//Initialize game setting
 	InitStock();
 	Init();
 	cnt = month = day = hour = order = 0;
 
-	
+
+	PrintMainMenu();
+	scanf("%d", &menu);
+
 	switch (menu)
 	{
 	case 1:
@@ -38,31 +38,30 @@ int main(void)
 		Load();
 		break;
 	case 3:
-		exit(0);
-		break;
+		return -1;
 	default:
-		//TODO: if user enter default value, program should announce 'it's wrong value'
+		//TODO: if user enter default value, program should announce 'it's wrong value
 		break;
 	}
 
 	system("cls");
-	
+
 	DrawNewspaper(companyOrder[order]);
-	
+
 	while (true)
-	{	
+	{
 		ShowMain();
 		DrawGraph(companyOrder[order]);
 		showCompanyReport(companyOrder[order]);
-		
+
 		if (Money <= 0)
 		{
 			printf("\n 파산... 3000원 대출해 드리겠습니다.");
 			getchar();
-			loan(3000);
+			Loan(3000);
 			system("cls");
 		}
-		
+
 		gotoxy(57, 10 + order - 1);
 		printf("  ");
 		gotoxy(57, 10 + order + 1);
@@ -75,26 +74,26 @@ int main(void)
 
 		switch (key)
 		{
-		//Press 'b' or 'B' to buy stock
+			//Press 'b' or 'B' to buy stock
 		case 'b':
 		case 'B':
 			BuyMenu(companyOrder[order]);
 			break;
 
-		//Press 'v' or 'V' to see the list of stocks
+			//Press 'v' or 'V' to see the list of stocks
 		case 'v':
 		case 'V':
 			ShowStockList();
 			break;
 
-		//Press 'esc' to pause game
+			//Press 'esc' to pause game
 		case 27:
 			system("cls");
 			titleLine("일시 정지");
 			printf(" 1. 통  계\n\n 2. 대  출\n\n 3. 갚  기\n\n 4. 설  정\n\n 5. 끝내기\n\n Esc 돌아가기");
 
 			pausemenu = getch();
-			
+
 			switch (pausemenu)
 			{
 			case '1':
@@ -104,7 +103,7 @@ int main(void)
 				loanMenu();
 				break;
 			case '3':
-				payback();
+				Payback();
 				break;
 			case '4':
 				settingMenu();
@@ -125,13 +124,13 @@ int main(void)
 			Sleep(100);
 			break;
 
-		//Press 's' or 'S' to sell some stock
+			//Press 's' or 'S' to sell some stock
 		case 's':
 		case 'S':
 			SellMenu();
 			break;
 
-		//Press 'e' or 'E' to save game
+			//Press 'e' or 'E' to save game
 		case 'E':
 		case 'e':
 			system("cls");
@@ -140,7 +139,7 @@ int main(void)
 			Sleep(300);
 			break;
 
-		//Press 'w' or 'W' to increase 'cnt' variable
+			//Press 'w' or 'W' to increase 'cnt' variable
 		case 'W':
 		case 'w':
 			if (timemode == 1)
@@ -151,21 +150,21 @@ int main(void)
 			}
 			break;
 
-		//Press 'i' or 'I' to see information of companies
+			//Press 'i' or 'I' to see information of companies
 		case 'I':
 		case 'i':
 			showCompanyInfo();
 			break;
 
-		//Press '2' to increase 'order' variable
-		//If the 'order' variable increases, the cursor move down
+			//Press '2' to increase 'order' variable
+			//If the 'order' variable increases, the cursor move down
 		case '2':
 			if (order < MAX_COMPANY - 1) order++;
 			DrawNewspaper(companyOrder[order]);
 			break;
 
-		//Press '8' to decrease 'order' variable
-		//If the 'order' variable decreases, the cursor move up
+			//Press '8' to decrease 'order' variable
+			//If the 'order' variable decreases, the cursor move up
 		case '8':
 			if (order > 0) order--;
 			DrawNewspaper(companyOrder[order]);
@@ -175,43 +174,49 @@ int main(void)
 			break;
 		}
 		for (int i = 0; i < MAX_COMPANY; i++)
-			PrevStockPrice[i] = StockPrice[i]; // array capitalize?
+			prevStockPrice[i] = StockPrice[i];
 
 		if (cnt % 20 == 0)
 		{
 			ChangeStockPrice();
 			UpdateGraphData();
 		}
-		
-		if (cnt % 20 == 0) 
+
+		if (cnt % 20 == 0)
 			hour++;
 
-		if (cnt % 60 == 0) 
+		if (cnt % 60 == 0)
 			ShowTipNews();
 
+		/* 하루마다 각 회사 상황이 바뀝니다					*/
+		/* 50% 확률로 상황이 좋아지거나 나빠집니다				*/
 		if (hour == 1)
 		{
 			for (int i = 0; i < MAX_COMPANY; i++)
 			{
-				if (rand() % 2 == 0) 
+				if (rand() % 2 == 0)
 					ifGood[i] = true;
-				else 
+				else
 					ifGood[i] = false;
 			}
 		}
+
+		/* 하루마다 상환 금액이 증가합니다 */
 		if (hour > 23)
 		{
 			hour = 0;
-			interest();
+			Interest();
 			day++;
 		}
+		/* 매월 세금을 냅니다 */
 		if (day > days[month] - 1)
 		{
 			day = 0;
 			month++;
 			Money -= TAX(Money);
 		}
-		if (month > 11) 
+
+		if (month > 11)
 			month = 0;
 
 		if (timemode == 0)
@@ -227,6 +232,6 @@ int main(void)
 		}
 	}
 	getchar();
-	UnInitStock();
+	DeallocateStock();
 	return 0;
 }

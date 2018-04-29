@@ -8,8 +8,8 @@
 #include "Stock.h"
 
 unsigned long Money;
-int StockPrice[MAX_COMPANY], PrevStockPrice[MAX_COMPANY], StockDeal, loanMoney, companyOrder[MAX_COMPANY];
-int Stocks; // will change variable name. it shows how much stock user has
+int StockPrice[MAX_COMPANY], prevStockPrice[MAX_COMPANY], StockDeal, loanMoney, companyOrder[MAX_COMPANY];
+int Stocks;
 int GraphData[MAX_COMPANY][48] = { 0 };
 bool ifGood[MAX_COMPANY];
 
@@ -27,7 +27,15 @@ char *CompanyName[MAX_COMPANY] =
 	"기야조선",
 };
 
-void ChangeStockPrice()
+/** Change each company's stock price 
+* 만약 회사 상황이 좋다면 (ifGood) 50% 확률로 0 ~ 1000 원 증가합니다
+* 아니면 50% 확률로 0 ~ 100원 감소합니다.
+* 만약 회사 상황이 안좋다면 (ifBad) 50% 확률로 0 ~ 500 원 증가합니다
+* 아니면 50% 확률로 0 ~ 1000원 감소합니다.
+*
+* @return void
+*/
+void ChangeStockPrice(void)
 {
 	srand((int)time(NULL));
 
@@ -55,40 +63,57 @@ void ChangeStockPrice()
 				StockPrice[i] -= (rand() % 1000);
 			}
 		}
-		if (StockPrice[i] < 2000) StockPrice[i] = 2000;
-		StockPrice[i] = StockPrice[i] / 10 * 10;
+		if (StockPrice[i] < 2000) /* 각 회사의 주식 가격은 2000이하로 안 떨어집니다 */
+			StockPrice[i] = 2000;
+
+		StockPrice[i] = StockPrice[i] / 10 * 10; /* 가격의 일자리 수는 내림 합니다 */
 	}
 }
 
+/** Draw stock price on console middle 
+*
+* @param mode
+* Mode is view mode
+* 만약 모드가 0이면 게임에서 설정한 순서로 주식 가격을 출력합니다
+* 만약 모드가 1이면 오름차순으로 정렬하여 주식 가격을 출력합니다
+* 만약 모드가 2이면 내림차순으로 정렬하여 주식 가격을 출력합니다
+*
+* @return void
+*/
 void ShowStockPrice(int mode)
 {
+	int order[MAX_COMPANY];
+	int temp;
+
 	if (mode == 0)
 	{
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			PrintStockPrice(i);
-			companyOrder[i] = i;
+			companyOrder[i] = i; //what is this?
 		}
 		return;
 	}
 
-	int order[MAX_COMPANY], tmp;
-	for (int i = 0; i < MAX_COMPANY; i++) order[i] = StockPrice[i];
+	for (int i = 0; i < MAX_COMPANY; i++) 
+		order[i] = StockPrice[i];
 
 	if (mode == 1)
 	{
+		/* Sort in ascending order */
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			for (int j = 0; j < MAX_COMPANY; j++)
 			{
 				if (order[i] > order[j])
 				{
-					tmp = order[i];
+					temp = order[i];
 					order[i] = order[j];
-					order[j] = tmp;
+					order[j] = temp;
 				}
 			}
 		}
+
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			for (int j = 0; j < MAX_COMPANY; j++)
@@ -104,15 +129,16 @@ void ShowStockPrice(int mode)
 	}
 	if (mode == 2)
 	{
+		/* Sort in descending order */
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			for (int j = 0; j < MAX_COMPANY; j++)
 			{
 				if (order[i] < order[j])
 				{
-					tmp = order[i];
+					temp = order[i];
 					order[i] = order[j];
-					order[j] = tmp;
+					order[j] = temp;
 				}
 			}
 		}
@@ -131,52 +157,83 @@ void ShowStockPrice(int mode)
 	}
 }
 
-void PrintStockPrice(int i)
+/** 회사 주식을 출력합니다
+* 현재 가격과 현재 가격과 이전 가격 차이를 출력합니다
+*
+* @param indexOfCompany
+* Index of company's array
+*
+* @return void
+*/
+void PrintStockPrice(int indexOfCompany)
 {
+	int diffOfPrice;
+
 	printf(" 회사 : ");
-	if (ifGood[i])
+	if (ifGood[indexOfCompany])
 	{
 		textcolor(10);
-		printf("%-20s", CompanyName[i]);
+		printf("%-20s", CompanyName[indexOfCompany]);
 		textcolor(7);
 	}
 	else 
 	{
 		textcolor(12);
-		printf("%-20s", CompanyName[i]);
+		printf("%-20s", CompanyName[indexOfCompany]);
 		textcolor(7);
 	}
-	printf(" │ 가격 : %5d원  ", StockPrice[i]);
-	if (PrevStockPrice[i] < StockPrice[i])
+	printf(" │ 가격 : %5d원  ", StockPrice[indexOfCompany]);
+
+	diffOfPrice = StockPrice[indexOfCompany] - prevStockPrice[indexOfCompany];
+	if (diffOfPrice >= 0)
 	{
 		textcolor(2);
-		printf("▲%4d원 ", StockPrice[i] - PrevStockPrice[i]);
+		printf("▲%4d원 ", diffOfPrice);
 		textcolor(7);
 	}
-	else if (PrevStockPrice[i] > StockPrice[i])
+	else
 	{
 		textcolor(14);
-		printf("▼%4d원 ", -1 * (StockPrice[i] - PrevStockPrice[i]));
+		printf("▼%4d원 ", -1 * diffOfPrice);
 		textcolor(7);
 	}
 	printf("\n");
 }
 
-void loan(int lmoney)
+/** 대출합니다
+*
+* @param lmoney
+* loan money
+*
+* @return void
+*/
+void Loan(int lmoney)
 {
 	loanMoney += lmoney;
 	Money += lmoney;
 }
 
-void interest()
+/** 상환 금액이 이자만큼 증가합니다
+* 이자는 5%입니다
+*
+* @return void
+*/
+void Interest(void)
 {
 	loanMoney += (int)(loanMoney * 0.05);
 }
 
-void payback()
+/** 대출을 상환합니다
+*
+* @return void
+*/
+void Payback()
 {
-	Money -= loanMoney;
-	loanMoney = 0;
+	if (Money >= loanMoney)
+	{
+		Money -= loanMoney;
+		loanMoney = 0;
+	}
 }
 
 /** Buy stocks and insert into the stock linked list to save user's stocks
@@ -222,14 +279,21 @@ void BuyStock(int order, int amount)
 	}
 }
 
-void sellStock(int i)
+/** Sell a stock and delete it on list
+*
+* @param indexOfStock
+* index of the list of stocks the user wants to sell 
+*
+* @return void
+*/
+void SellStock(int indexOfStock)
 {
-	Stock *f = FindStock(i - 1);
-	if (f == NULL) return;
+	Stock *saleStock = FindStock(indexOfStock - 1);
+	if (saleStock == NULL) 
+		return;
 	
-	Money += (StockPrice[f->company]);
-	DeleteStock(f);
-	
+	Money += (StockPrice[saleStock->company]);
+	DeleteStock(saleStock);	
 }
 
 /** Show list of stocks that user has
@@ -291,7 +355,11 @@ void ShowStockList(void)
 	system("cls");
 }
 
-void UpdateGraphData()
+/** 주식 그래프의 데이터를 업데이트합니다
+* 
+* @return void
+*/
+void UpdateGraphData(void)
 {
 	for (int i = 0; i < MAX_COMPANY; i++)
 	{
