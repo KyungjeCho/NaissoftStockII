@@ -90,7 +90,7 @@ char *goodArticle[MAX_ARTICLE] =
 
 int days[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-void init()
+void Init()
 {
 	Money = DEF_MONEY;
 	for (int i = 0; i < MAX_COMPANY; i++) StockPrice[i] = 9000;
@@ -102,11 +102,15 @@ void init()
 	viewmode = timemode = 0;
 }
 
+
 void ShowMain()
 {
 	gotoxy(0, 1);
 	printf(" Stock II - Naissoft 주식 게임 2\n ver α 1.3.0128\n\n B 사기, S 팔기, V 목록, E 저장, I 회사 정보, 8 / 2 회사 선택, Esc 메뉴");
-	if (timemode == 1) printf("\n W 기다리기");
+
+	if (timemode == 1) 
+		printf("\n W 기다리기");
+
 	gotoxy(0, 5);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
 
@@ -116,7 +120,7 @@ void ShowMain()
 	printf("\n\n 이번 달 납부할 세금은 %d원입니다. %d일 남았습니다.\n", TAX(Money), days[month] - day);
 }
 
-void load()
+void Load()
 {
 	int stocks = 0;
 	Stock tmp;
@@ -124,7 +128,7 @@ void load()
 	FILE *save = fopen("save.ns3", "rb");
 	if (save == NULL)
 	{
-		init();
+		Init();
 		return;
 	}
 
@@ -159,7 +163,7 @@ void load()
 	fclose(save);
 }
 
-void save()
+void Save()
 {
 	int stocks = 0;
 	FILE *save = fopen("save.ns3", "wb");
@@ -182,7 +186,7 @@ void save()
 	fclose(save);
 }
 
-void showTipNews()
+void ShowTipNews()
 {
 	gotoxy(0, 8);
 	for (int i = 0; i < 80; i++) printf(" ");
@@ -197,85 +201,122 @@ void showTipNews()
 	}
 }
 
-void buyMenu(int order)
+/** Move a stock buy menu to buy stocks
+*
+* @param order
+* Company number to identify companies
+*
+* @return void
+*/
+void BuyMenu(int order)
 {
-	char ch;
-	int amount;
+	int amountOfStocks;
 
 	system("cls");
 	titleLine("주식 사기");
 
-	printf(" 현재 %s 회사의 주가는 %d원입니다.\n\n 몇 개를 구입하시겠습니까? (취소 : 0)", CompanyName[order], StockPrice[order]);
+	printf(" 현재 %s 회사의 주가는 %d원입니다.\n\n 몇 개를 구입하시겠습니까? (취소 : 0)"
+		, CompanyName[order], StockPrice[order]); 
 
-	scanf("%d", &amount);
-	if (amount > 0)
+	scanf("%d", &amountOfStocks);
+	if (amountOfStocks > 0)
 	{
-		buyStock(order, amount);
+		BuyStock(order, amountOfStocks);
 		printf("\n\n 구입하였습니다.");
 		Sleep(2000);
 	}
+
 	system("cls");
 	return;
 }
 
-void sellMenu()
+/** Move a stock sell menu to sell stocks
+*
+* @return void
+*/
+void SellMenu(void)
 {
-	char ch = '\0';
-	int idx, j, k;
-	k = idx = 1;
+	int idx;
+	int numberOfStocks;
+	int listPage;
+	char key;
+	Stock *find;
+
+	key = '\0';
+	listPage = idx = 1;
 	system("cls");
+
+	/* 유저는 A, D, W, S, B, Q 키를 입력합니다					*/
+	/* 주식은 한 페이지 당 10개 씩 출력합니다						*/
+	/* A키를 입력하면 이전 페이지를 출력합니다						*/
+	/* D키를 입력하면 다음 페이지를 출력합니다						*/
+	/* W키를 입력하면 현재 선택한 주식 위의 주식을 선택합니다		*/
+	/* S키를 입력하면 현재 선택한 주식 아래의 주식을 선택합니다		*/
+	/* B키를 입력하면 선택한 주식 판매합니다						*/
+	/* Q키를 입력하면 이 반복문을 중지합니다						*/
 	while (true)
 	{	
 		titleLine("주식 팔기");
 		printf("\n [ W / S로 팔 주식을 고르세요. A / D로 더 볼 수 있습니다. B를 누르면 팝니다. ]\n\n");
-		j = 1;
-		for (now = head->next; now; now = now->next)
+		
+		numberOfStocks = 1;
+		/* 주식 연결리스트를 순회하면서 가지고 있는 회사 주식 가격을 출력합니다 */
+		for (now = head->next; now != NULL; now = now->next)
 		{
-			if (j >= k && j < k + 10) printf("\n %d. 회사 : %-20s, 가격 : %d원", j, CompanyName[now->company], now->price);
-			j++;
+			/* 주식을 한 페이지 당 10개씩 출력합니다. */
+			if (numberOfStocks >= listPage && numberOfStocks < listPage + 10)
+				printf("\n %d. 회사 : %-20s, 가격 : %d원", numberOfStocks, CompanyName[now->company], now->price);
+			numberOfStocks++;
 		}
 		printf("\n 돌아가려면 Q를 누르세요.\n");
 		
-		Stock *f = FindStock(idx - 1);
-		if (f == NULL) {
+		find = FindStock(idx - 1);
+		if (find == NULL) {
 			system("cls");
 			return;
 		}	
 	
 		printf("\n [ 선택 주식 정보 ]\n\n 번호 : %d\n 회사 : %s\n 가격 : %d\n 현재 가격 : %d\n 매도 이익 : %d", idx, CompanyName[f->company], f->price, StockPrice[f->company], StockPrice[f->company] - f->price);
 		
-		ch = getch();
+		key = getch();
 		
-		switch (ch)
+		switch (key)
 		{
 			case 'A':
 			case 'a':
-				if (k > 10) k -= 10;
+				if (listPage > 10)
+					listPage -= 10;
 				break;
+
 			case 'D':
 			case 'd':
-				k += 10;
+				listPage += 10;
 				break;
+
 			case 'W':
 			case 'w':
-				if (idx > 1) idx--;
+				if (idx > 1) 
+					idx--;
 				break;
+
 			case 'S':
 			case 's':
-				if (idx < j) idx++;
+				if (idx < numberOfStocks)
+					idx++;
 				break;
+
 			case 'Q':
 			case 'q':
 				system("cls");
 				return;
-				break;
+
 			case 'B':
 			case 'b':
 				sellStock(idx);
 				break;
 		}
 		
-		ch = '\0';
+		key = '\0';
 		system("cls");
 	}
 }
@@ -438,7 +479,7 @@ void showCompanyReport(int company)
 	printf("전문가 의견 : %s", ifGood[company] ? "긍정적" : "부정적");
 }
 
-void drawNewspaper(int comp)
+void DrawNewspaper(int comp)
 {
 	textcolor(112);
 	

@@ -7,9 +7,9 @@
 
 int main(void)
 {
-	//Initialize value
 	int menu, cnt, order;
 	char key, pausemenu;
+
 
 	//Set window console
 	system("title Stock 2 - 주식 게임 2");
@@ -17,14 +17,14 @@ int main(void)
 	system("mode con: cols=120 lines=40");
 
 	//Copyright
-	startLogo();
+	StartLogo();
 
-	printMainMenu();
+	PrintMainMenu();
 	scanf("%d", &menu);
 
 	//Initialize game setting
 	InitStock();
-	init();
+	Init();
 	cnt = month = day = hour = order = 0;
 
 	
@@ -32,10 +32,10 @@ int main(void)
 	{
 	case 1:
 		ChangeStockPrice();
-		save();
+		Save();
 		break;
 	case 2:
-		load();
+		Load();
 		break;
 	case 3:
 		exit(0);
@@ -47,7 +47,7 @@ int main(void)
 
 	system("cls");
 	
-	drawNewspaper(companyOrder[order]);
+	DrawNewspaper(companyOrder[order]);
 	
 	while (true)
 	{	
@@ -78,13 +78,13 @@ int main(void)
 		//Press 'b' or 'B' to buy stock
 		case 'b':
 		case 'B':
-			buyMenu(companyOrder[order]);
+			BuyMenu(companyOrder[order]);
 			break;
 
 		//Press 'v' or 'V' to see the list of stocks
 		case 'v':
 		case 'V':
-			showStockList();
+			ShowStockList();
 			break;
 
 		//Press 'esc' to pause game
@@ -128,14 +128,14 @@ int main(void)
 		//Press 's' or 'S' to sell some stock
 		case 's':
 		case 'S':
-			sellMenu();
+			SellMenu();
 			break;
 
 		//Press 'e' or 'E' to save game
 		case 'E':
 		case 'e':
 			system("cls");
-			save();
+			Save();
 			printf("\n 게임이 저장되었습니다.");
 			Sleep(300);
 			break;
@@ -161,21 +161,21 @@ int main(void)
 		//If the 'order' variable increases, the cursor move down
 		case '2':
 			if (order < MAX_COMPANY - 1) order++;
-			drawNewspaper(companyOrder[order]);
+			DrawNewspaper(companyOrder[order]);
 			break;
 
 		//Press '8' to decrease 'order' variable
 		//If the 'order' variable decreases, the cursor move up
 		case '8':
 			if (order > 0) order--;
-			drawNewspaper(companyOrder[order]);
+			DrawNewspaper(companyOrder[order]);
 			break;
 
 		default:
 			break;
 		}
 		for (int i = 0; i < MAX_COMPANY; i++)
-			PrevStockPrice[i] = StockPrice[i];
+			PrevStockPrice[i] = StockPrice[i]; // array capitalize?
 
 		if (cnt % 20 == 0)
 		{
@@ -183,16 +183,20 @@ int main(void)
 			UpdateGraphData();
 		}
 		
-		if (cnt % 20 == 0) hour++;
+		if (cnt % 20 == 0) 
+			hour++;
 
-		if (cnt % 60 == 0) showTipNews();
+		if (cnt % 60 == 0) 
+			ShowTipNews();
 
 		if (hour == 1)
 		{
 			for (int i = 0; i < MAX_COMPANY; i++)
 			{
-				if (rand() % 2 == 0) ifGood[i] = true;
-				else ifGood[i] = false;
+				if (rand() % 2 == 0) 
+					ifGood[i] = true;
+				else 
+					ifGood[i] = false;
 			}
 		}
 		if (hour > 23)
@@ -207,7 +211,8 @@ int main(void)
 			month++;
 			Money -= TAX(Money);
 		}
-		if (month > 11) month = 0;
+		if (month > 11) 
+			month = 0;
 
 		if (timemode == 0)
 		{

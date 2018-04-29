@@ -29,19 +29,19 @@ extern Stock *head, *now, tmp;
 
 extern int viewmode, timemode;
 
-void init();
+void Init();
 
 void ShowMain();
 
-void load();
+void Load();
 
-void save();
+void Save();
 
-void showTipNews();
+void ShowTipNews();
 
-void buyMenu(int);
+void BuyMenu(int order);
 
-void sellMenu();
+void SellMenu(void);
 
 void showStats();
 
@@ -57,4 +57,4 @@ void DrawGraph(int);
 
 void showCompanyReport(int);
 
-void drawNewspaper(int);
+void DrawNewspaper(int);

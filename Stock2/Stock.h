@@ -4,9 +4,9 @@ struct Stock
 	int price;
 	int company;
 	bool ifChecked;
-
-	Stock *next;
+	
 	Stock *prev;
+	Stock *next;
 };
 
 extern Stock *head, *now, tmp;

@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <Windows.h>
 
-void startLogo()
+void StartLogo()
 {
 	setcursortype(NOCURSOR);
 	textcolor(7);
@@ -41,7 +41,7 @@ void startLogo()
 	setcursortype(NORMALCURSOR);
 }
 
-void printMainMenu()
+void PrintMainMenu()
 {
 	printf("\n\n\t\t\t\t\t        Stock II - 주식 게임 2");
 	printf("\n\n\n\t\t\t\t\t    항목을 선택해 주시기 바랍니다.");

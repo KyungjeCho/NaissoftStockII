@@ -14,19 +14,21 @@ void InitStock()
 
 Stock *InsertStock(Stock *Target, Stock *aStock)
 {
-	Stock *New;
-	Stock *Right;
+	Stock *pNew;
+	Stock *pRight;
 
-	New = (Stock *)malloc(sizeof(Stock));
-	*New = *aStock;
+	pNew = (Stock *)malloc(sizeof(Stock));
+	*pNew = *aStock;
 
-	Right = Target->next;
-	New->next = Right;
-	New->prev = Target;
+	pRight = Target->next;
+	pNew->next = pRight;
+	pNew->prev = Target;
+	Target->next = pNew;
 
-	Target->next = New;
-	if (Right) Right->prev = New;
-	return New;
+	if (pRight) 
+		pRight->prev = pNew;
+
+	return pNew;
 }
 
 bool DeleteStock(Stock *Target)
