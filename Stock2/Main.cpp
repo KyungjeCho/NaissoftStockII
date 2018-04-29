@@ -24,7 +24,6 @@ int main(void)
 	Init();
 	cnt = month = day = hour = order = 0;
 
-
 	PrintMainMenu();
 	scanf("%d", &menu);
 
@@ -173,6 +172,7 @@ int main(void)
 		default:
 			break;
 		}
+
 		for (int i = 0; i < MAX_COMPANY; i++)
 			prevStockPrice[i] = StockPrice[i];
 

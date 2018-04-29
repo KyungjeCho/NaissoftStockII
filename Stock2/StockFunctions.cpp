@@ -70,7 +70,7 @@ void ChangeStockPrice(void)
 	}
 }
 
-/** Draw stock price on console middle 
+/** Draw stock price on console
 *
 * @param mode
 * Mode is view mode
@@ -90,7 +90,7 @@ void ShowStockPrice(int mode)
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			PrintStockPrice(i);
-			companyOrder[i] = i; //what is this?
+			companyOrder[i] = i; 
 		}
 		return;
 	}
@@ -158,7 +158,7 @@ void ShowStockPrice(int mode)
 }
 
 /** 회사 주식을 출력합니다
-* 현재 가격과 현재 가격과 이전 가격 차이를 출력합니다
+* 현재 가격, 현재 가격과 이전 가격 차이를 출력합니다
 *
 * @param indexOfCompany
 * Index of company's array
