@@ -185,19 +185,20 @@ void PrintStockPrice(int indexOfCompany)
 	printf(" │ 가격 : %5d원  ", StockPrice[indexOfCompany]);
 
 	diffOfPrice = StockPrice[indexOfCompany] - prevStockPrice[indexOfCompany];
-	if (diffOfPrice >= 0)
+	if (diffOfPrice > 0)
 	{
 		textcolor(2);
 		printf("▲%4d원 ", diffOfPrice);
 		textcolor(7);
 	}
-	else
+	else if (diffOfPrice < 0)
 	{
 		textcolor(14);
 		printf("▼%4d원 ", -1 * diffOfPrice);
 		textcolor(7);
 	}
 	printf("\n");
+	
 }
 
 /** 대출합니다
