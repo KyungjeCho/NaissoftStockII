@@ -7,6 +7,7 @@
 void StartLogo()
 {
 	setcursortype(NOCURSOR);
+
 	textcolor(7);
 	Sleep(300);
 	textcolor(8);

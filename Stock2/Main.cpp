@@ -22,6 +22,7 @@ int main(void)
 	//Initialize game setting
 	InitStock();
 	Init();
+
 	cnt = month = day = hour = order = 0;
 
 	PrintMainMenu();
@@ -29,15 +30,19 @@ int main(void)
 
 	switch (menu)
 	{
+
 	case 1:
 		ChangeStockPrice();
 		Save();
 		break;
+
 	case 2:
 		Load();
 		break;
+
 	case 3:
 		return -1;
+
 	default:
 		//TODO: if user enter default value, program should announce 'it's wrong value
 		break;
@@ -73,6 +78,7 @@ int main(void)
 
 		switch (key)
 		{
+
 			//Press 'b' or 'B' to buy stock
 		case 'b':
 		case 'B':
@@ -95,18 +101,22 @@ int main(void)
 
 			switch (pausemenu)
 			{
+
 			case '1':
 				showStats();
 				break;
+
 			case '2':
 				loanMenu();
 				break;
+
 			case '3':
 				Payback();
 				break;
 			case '4':
 				settingMenu();
 				break;
+
 			case '5':
 				system("cls");
 				printf("\n 종료하시겠습니까? 저장되지 않은 정보는 사라집니다.\n Y / N");
@@ -114,8 +124,10 @@ int main(void)
 				ch = getch();
 				if (ch == 'Y' || ch == 'y') return 0;
 				break;
+
 			case 27:
 				break;
+
 			default:
 				break;
 			}
@@ -208,6 +220,7 @@ int main(void)
 			Interest();
 			day++;
 		}
+
 		/* 매월 세금을 냅니다 */
 		if (day > days[month] - 1)
 		{
@@ -231,7 +244,9 @@ int main(void)
 			Sleep(DELAY);
 		}
 	}
+
 	getchar();
 	DeallocateStock();
+
 	return 0;
 }
