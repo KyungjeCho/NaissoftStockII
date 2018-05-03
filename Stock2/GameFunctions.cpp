@@ -1,8 +1,12 @@
 #include "GameFunctions.h"
 
-int month, day, hour, achour;
+int month;
+int day;
+int hour;
+int achour; /* it is not used */
 
-int viewmode, timemode;
+int viewmode; /* 0 : default, 1 : descending, 2 : ascending */
+int timemode;
 
 char *Tips[MAX_TIP] =
 {
@@ -89,6 +93,7 @@ char *goodArticle[MAX_ARTICLE] =
 };
 
 int days[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
 
 void Init()
 {

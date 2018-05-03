@@ -2,6 +2,14 @@
 // Stock II
 // (c) 2016~2018 Naissoft.
 //
+/*========================================================*/
+/* Source : Main .cpp                                     */
+/*                                                        */
+/* Purpose : Main code where game is running              */
+/*                                                        */
+/* Author : Naissoft                                      */
+/*                                                        */
+/*========================================================*/
 
 #include "GameFunctions.h"
 
@@ -126,6 +134,7 @@ int main(void)
 
 				if (ch == 'Y' || ch == 'y') 
 					return 0;
+
 				break;
 
 			case 27:
@@ -156,12 +165,14 @@ int main(void)
 			//Press 'w' or 'W' to increase 'cnt' variable
 		case 'W':
 		case 'w':
+
 			if (timemode == 1)
 			{
 				while (cnt % 20 != 0) cnt++;
 				cnt += 20;
 				Sleep(100);
 			}
+
 			break;
 
 			//Press 'i' or 'I' to see information of companies
@@ -173,6 +184,7 @@ int main(void)
 			//Press '2' to increase 'order' variable
 			//If the 'order' variable increases, the cursor move down
 		case '2':
+
 			if (order < MAX_COMPANY - 1) 
 				order++;
 
@@ -182,6 +194,7 @@ int main(void)
 			//Press '8' to decrease 'order' variable
 			//If the 'order' variable decreases, the cursor move up
 		case '8':
+
 			if (order > 0) 
 				order--;
 

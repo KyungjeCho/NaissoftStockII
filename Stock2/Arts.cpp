@@ -4,21 +4,26 @@
 #include <conio.h>
 #include <Windows.h>
 
+
 void StartLogo()
 {
 	setcursortype(NOCURSOR);
 
-	textcolor(7);
 	Sleep(300);
+
 	textcolor(8);
 	gotoxy(1, 2), printf("유의 사항 및 저작권 안내");
 	Sleep(75);
+
 	textcolor(7);
 	gotoxy(1, 2), printf("유의 사항 및 저작권 안내");
 	Sleep(75);
+
 	textcolor(15);
 	gotoxy(1, 2), printf("유의 사항 및 저작권 안내");
+
 	Sleep(300);
+
 	gotoxy(1, 6);
 	printf( "%s%s%s%s%s%s%s",
 			"이 게임은 실제 주식 투자와 상당히 다릅니다. 실제로 주식 투자를 할 때에 주의하십시오.\n",
@@ -29,18 +34,22 @@ void StartLogo()
 			" ⓒ 2013~2018 Naissoft. All rights reserved.\n\n",
 			" 시작하려면 아무 키나 누르십시오.");
 	getch();
+
 	textcolor(7);
 	gotoxy(1, 2), printf("유의 사항 및 저작권 안내");
 	Sleep(75);
+
 	textcolor(8);
 	gotoxy(1, 2), printf("유의 사항 및 저작권 안내");
 	Sleep(75);
+
 	system("cls");
 	textcolor(7);
 	Sleep(300);
 
 	setcursortype(NORMALCURSOR);
 }
+
 
 void PrintMainMenu()
 {

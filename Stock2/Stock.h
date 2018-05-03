@@ -1,4 +1,3 @@
-
 struct Stock
 {
 	int price;

@@ -1,3 +1,13 @@
+/*========================================================*/
+/* Source : Stock.cpp                                     */
+/*                                                        */
+/* Purpose : Call stock data structure functions to       */
+/*           manipulate stock linked list                 */
+/*                                                        */
+/* Author : Naissoft                                      */
+/*                                                        */
+/*========================================================*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -68,6 +78,7 @@ bool DeleteStock(Stock *pTarget)
 	pRight = pTarget->next;
 
 	pLeft->next = pRight;
+
 	if (pRight) 
 		pRight->prev = pLeft;
 
@@ -87,6 +98,7 @@ void AppendStock(Stock *aStock)
 	Stock *pTail;
 
 	for (pTail = head; pTail->next; pTail = pTail->next){}
+
 	InsertStock(pTail, aStock);
 }
 
@@ -107,8 +119,10 @@ Stock *FindStock(int idx)
 	{
 		if (index == idx) 
 			return now;
+
 		index++;
 	}
+
 	return NULL;
 }
 

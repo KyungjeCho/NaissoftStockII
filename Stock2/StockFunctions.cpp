@@ -1,3 +1,15 @@
+/*========================================================*/
+/* Source : StockFunctions.cpp                            */
+/*                                                        */
+/* Purpose : Call stock manipulation functions to buy,    */
+/*           sell, or change stock prices                 */
+/*                                                        */
+/* Author : Naissoft                                      */
+/*                                                        */
+/* Spacing code                                           */
+/* Modified date : 10 March 2018                          */
+/*========================================================*/
+
 #include <stdio.h>
 #include <time.h>
 #include <conio.h>
@@ -56,22 +68,26 @@ void ChangeStockPrice(void)
 			{
 				StockPrice[i] += (rand() % 1000);
 			}
+
 			else
 			{
 				StockPrice[i] -= (rand() % 100);
 			}
 		}
+
 		else
 		{
 			if ((rand() % 2) == 0)
 			{
 				StockPrice[i] += (rand() % 500);
 			}
+
 			else
 			{
 				StockPrice[i] -= (rand() % 1000);
 			}
 		}
+
 		if (StockPrice[i] < 2000) /* 각 회사의 주식 가격은 2000이하로 안 떨어집니다 */
 			StockPrice[i] = 2000;
 
@@ -85,8 +101,8 @@ void ChangeStockPrice(void)
 * @param mode
 * Mode is view mode
 * 만약 모드가 0이면 게임에서 설정한 순서로 주식 가격을 출력합니다
-* 만약 모드가 1이면 오름차순으로 정렬하여 주식 가격을 출력합니다
-* 만약 모드가 2이면 내림차순으로 정렬하여 주식 가격을 출력합니다
+* 만약 모드가 1이면 내림차순으로 정렬하여 주식 가격을 출력합니다
+* 만약 모드가 2이면 오름차순으로 정렬하여 주식 가격을 출력합니다
 *
 * @return void
 */
@@ -102,6 +118,7 @@ void ShowStockPrice(int mode)
 			PrintStockPrice(i);
 			companyOrder[i] = i; 
 		}
+
 		return;
 	}
 
@@ -110,7 +127,7 @@ void ShowStockPrice(int mode)
 
 	if (mode == 1)
 	{
-		/* Sort in ascending order */
+		/* Sort in descending order */
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			for (int j = 0; j < MAX_COMPANY; j++)
@@ -139,7 +156,7 @@ void ShowStockPrice(int mode)
 	}
 	if (mode == 2)
 	{
-		/* Sort in descending order */
+		/* Sort in ascending order */
 		for (int i = 0; i < MAX_COMPANY; i++)
 		{
 			for (int j = 0; j < MAX_COMPANY; j++)
@@ -187,6 +204,7 @@ void PrintStockPrice(int indexOfCompany)
 		printf("%-20s", CompanyName[indexOfCompany]);
 		textcolor(7);
 	}
+
 	else 
 	{
 		textcolor(12);
@@ -196,18 +214,21 @@ void PrintStockPrice(int indexOfCompany)
 	printf(" │ 가격 : %5d원  ", StockPrice[indexOfCompany]);
 
 	diffOfPrice = StockPrice[indexOfCompany] - prevStockPrice[indexOfCompany];
+
 	if (diffOfPrice > 0)
 	{
 		textcolor(2);
 		printf("▲%4d원 ", diffOfPrice);
 		textcolor(7);
 	}
+
 	else if (diffOfPrice < 0)
 	{
 		textcolor(14);
 		printf("▼%4d원 ", -1 * diffOfPrice);
 		textcolor(7);
 	}
+
 	printf("\n");
 	
 }
@@ -288,6 +309,7 @@ void BuyStock(int order, int amount)
 			Money -= StockPrice[order];
 			printf(" 남은 돈은 %d원입니다.\n", Money);
 		}
+
 		else
 		{
 			printf(" 돈이 부족합니다. 주식을 살 수 없습니다.\n");
@@ -306,6 +328,7 @@ void BuyStock(int order, int amount)
 void SellStock(int indexOfStock)
 {
 	Stock *saleStock = FindStock(indexOfStock - 1);
+
 	if (saleStock == NULL) 
 		return;
 	
@@ -327,11 +350,13 @@ void ShowStockList(void)
 	system("cls");
 
 	listPage = 1;
+
 	if (Stocks <= 0) 
 	{
 		printf("\n 주식이 없습니다.\n");
 		Sleep(600);
 	}
+
 	else
 	{
 		/* 유저는 A, D, Q 키를 입력합니다				*/
@@ -347,6 +372,7 @@ void ShowStockList(void)
 			printf("\n [ A, D로 더 보실 수 있습니다. ]\n\n");
 
 			numberOfStocks = 1;
+
 			/* 주식 연결리스트를 순회하면서 가지고 있는 회사 주식 가격을 출력합니다 */
 			for (now = head->next; now != NULL; now = now->next)
 			{
@@ -356,13 +382,16 @@ void ShowStockList(void)
 
 				numberOfStocks++;
 			}
+
 			printf("\n 돌아가려면 Q를 누르세요.\n");
 
 			key = getch();
+
 			if (key == 'D' || key == 'd')
 			{
 				listPage += 10;
 			}
+
 			else if (key == 'A' || key == 'a')
 			{
 				if (listPage > 10)
@@ -386,6 +415,7 @@ void UpdateGraphData(void)
 		{
 			GraphData[i][j + 1] = GraphData[i][j];
 		}
+
 		GraphData[i][0] = StockPrice[i];
 	}
 }
