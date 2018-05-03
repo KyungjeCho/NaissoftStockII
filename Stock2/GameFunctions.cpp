@@ -1,5 +1,6 @@
-/* Purpose : Call stock data structure functions to       */
-/*           manipulate stock linked list                 */
+/*========================================================*/
+/* Source : Main.cpp                                      */
+/* Purpose : Call game functions to proceed with the game */
 /*                                                        */
 /* Author : Naissoft                                      */
 /*                                                        */

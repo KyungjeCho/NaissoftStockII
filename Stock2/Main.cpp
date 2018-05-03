@@ -3,7 +3,7 @@
 // (c) 2016~2018 Naissoft.
 //
 /*========================================================*/
-/* Source : Main .cpp                                     */
+/* Source : Main.cpp                                      */
 /*                                                        */
 /* Purpose : Main code where game is running              */
 /*                                                        */
