@@ -6,7 +6,7 @@
 /*                                                        */
 /* Modify settingMenu() function to proceed slowly        */
 /* Change function name  settingMenu -> ChangeGameMenu    */
-/* Modified date : 4 March 2018                           */
+/* Modified date : 4 May 2018 (KyungjeCho)                */
 /*========================================================*/
 
 #include "GameFunctions.h"

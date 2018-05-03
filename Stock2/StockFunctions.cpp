@@ -7,7 +7,7 @@
 /* Author : Naissoft                                      */
 /*                                                        */
 /* Spacing code                                           */
-/* Modified date : 4 March 2018                           */
+/* Modified date : 4 May 2018 (KyungjeCho)                */
 /*========================================================*/
 
 #include <stdio.h>
