@@ -120,9 +120,12 @@ int main(void)
 			case '5':
 				system("cls");
 				printf("\n 종료하시겠습니까? 저장되지 않은 정보는 사라집니다.\n Y / N");
+
 				char ch;
 				ch = getch();
-				if (ch == 'Y' || ch == 'y') return 0;
+
+				if (ch == 'Y' || ch == 'y') 
+					return 0;
 				break;
 
 			case 27:
@@ -170,14 +173,18 @@ int main(void)
 			//Press '2' to increase 'order' variable
 			//If the 'order' variable increases, the cursor move down
 		case '2':
-			if (order < MAX_COMPANY - 1) order++;
+			if (order < MAX_COMPANY - 1) 
+				order++;
+
 			DrawNewspaper(companyOrder[order]);
 			break;
 
 			//Press '8' to decrease 'order' variable
 			//If the 'order' variable decreases, the cursor move up
 		case '8':
-			if (order > 0) order--;
+			if (order > 0) 
+				order--;
+
 			DrawNewspaper(companyOrder[order]);
 			break;
 
@@ -208,6 +215,7 @@ int main(void)
 			{
 				if (rand() % 2 == 0)
 					ifGood[i] = true;
+
 				else
 					ifGood[i] = false;
 			}
@@ -238,6 +246,7 @@ int main(void)
 			Sleep(DELAY);
 			cnt++;
 		}
+
 		else if (timemode == 1)
 		{
 			clearbuffer();

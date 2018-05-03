@@ -8,9 +8,17 @@
 #include "Stock.h"
 
 unsigned long Money;
-int StockPrice[MAX_COMPANY], prevStockPrice[MAX_COMPANY], StockDeal, loanMoney, companyOrder[MAX_COMPANY];
+
+int StockDeal;
+int loanMoney;
 int Stocks;
+
+int StockPrice[MAX_COMPANY];
+int prevStockPrice[MAX_COMPANY];
+int companyOrder[MAX_COMPANY];
+
 int GraphData[MAX_COMPANY][48] = { 0 };
+
 bool ifGood[MAX_COMPANY];
 
 char *CompanyName[MAX_COMPANY] =
@@ -26,6 +34,7 @@ char *CompanyName[MAX_COMPANY] =
 	"수배자 모터스",
 	"기야조선",
 };
+
 
 /** Change each company's stock price 
 * 만약 회사 상황이 좋다면 (ifGood) 50% 확률로 0 ~ 1000 원 증가합니다
@@ -69,6 +78,7 @@ void ChangeStockPrice(void)
 		StockPrice[i] = StockPrice[i] / 10 * 10; /* 가격의 일자리 수는 내림 합니다 */
 	}
 }
+
 
 /** Draw stock price on console
 *
@@ -157,6 +167,7 @@ void ShowStockPrice(int mode)
 	}
 }
 
+
 /** 회사 주식을 출력합니다
 * 현재 가격, 현재 가격과 이전 가격 차이를 출력합니다
 *
@@ -201,6 +212,7 @@ void PrintStockPrice(int indexOfCompany)
 	
 }
 
+
 /** 대출합니다
 *
 * @param lmoney
@@ -214,6 +226,7 @@ void Loan(int lmoney)
 	Money += lmoney;
 }
 
+
 /** 상환 금액이 이자만큼 증가합니다
 * 이자는 5%입니다
 *
@@ -223,6 +236,7 @@ void Interest(void)
 {
 	loanMoney += (int)(loanMoney * 0.05);
 }
+
 
 /** 대출을 상환합니다
 *
@@ -236,6 +250,7 @@ void Payback()
 		loanMoney = 0;
 	}
 }
+
 
 /** Buy stocks and insert into the stock linked list to save user's stocks
 * 주식을 사고 유저의 주식들을 저장하기 위해 주식 연결리스트에 저장합니다
@@ -280,6 +295,7 @@ void BuyStock(int order, int amount)
 	}
 }
 
+
 /** Sell a stock and delete it on list
 *
 * @param indexOfStock
@@ -296,6 +312,7 @@ void SellStock(int indexOfStock)
 	Money += (StockPrice[saleStock->company]);
 	DeleteStock(saleStock);	
 }
+
 
 /** Show list of stocks that user has
 *
@@ -355,6 +372,7 @@ void ShowStockList(void)
 	}
 	system("cls");
 }
+
 
 /** 주식 그래프의 데이터를 업데이트합니다
 * 
