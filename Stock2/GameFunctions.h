@@ -47,7 +47,7 @@ void showStats();
 
 void getKey(char *);
 
-void settingMenu();
+void ChangeGameMode();
 
 void loanMenu();
 

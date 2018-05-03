@@ -122,7 +122,7 @@ int main(void)
 				Payback();
 				break;
 			case '4':
-				settingMenu();
+				ChangeGameMode();
 				break;
 
 			case '5':

@@ -1,3 +1,13 @@
+/* Purpose : Call stock data structure functions to       */
+/*           manipulate stock linked list                 */
+/*                                                        */
+/* Author : Naissoft                                      */
+/*                                                        */
+/* Modify settingMenu() function to proceed slowly        */
+/* Change function name  settingMenu -> ChangeGameMenu    */
+/* Modified date : 4 March 2018                           */
+/*========================================================*/
+
 #include "GameFunctions.h"
 
 int month;
@@ -378,13 +388,23 @@ void getKey(char *c)
 	else *c = getch();
 }
 
-void settingMenu()
+
+/** Change view mode or time mode
+*
+* @return void
+*/
+void ChangeGameMode()
 {
 	char select;
 
 	system("cls");
+
 	titleLine("설  정");
-	printf(" 1. 보기 모드 전환\n 2. 시간 흐름 방식 전환\n Esc 돌아가기");
+
+	printf(	"%s%s%s",
+			" 1. 보기 모드 전환\n",
+			" 2. 시간 흐름 방식 전환\n",
+			" Esc 돌아가기");
 	
 	select = getch();
 
@@ -397,19 +417,21 @@ void settingMenu()
 		if (viewmode > 2) 
 			viewmode = 0;
 
+		system("cls");
+
 		switch (viewmode)
 		{
 
 		case 0:
-			printf(" 보기 방식이 기본 모드로 전환되었습니다.");
+			printf("\n 보기 방식이 기본 모드로 전환되었습니다.");
 			break;
 
 		case 1:
-			printf(" 보기 방식이 내림차순 모드로 전환되었습니다.");
+			printf("\n 보기 방식이 내림차순 모드로 전환되었습니다.");
 			break;
 
 		case 2:
-			printf(" 보기 방식이 오름차순 모드로 전환되었습니다.");
+			printf("\n 보기 방식이 오름차순 모드로 전환되었습니다.");
 			break;
 		}
 		break;
@@ -420,15 +442,17 @@ void settingMenu()
 		if (timemode > 1) 
 			timemode = 0;
 
+		system("cls");
+
 		switch (timemode)
 		{
 
 		case 0:
-			printf(" 시간 흐름이 자동으로 전환되었습니다.");
+			printf("\n 시간 흐름이 자동으로 전환되었습니다.");
 			break;
 
 		case 1:
-			printf(" 시간 흐름이 수동으로 전환되었습니다.");
+			printf("\n 시간 흐름이 수동으로 전환되었습니다.");
 			break;
 		}
 		break;
@@ -440,19 +464,24 @@ void settingMenu()
 		break;
 	}
 
-	Sleep(300);
+	Sleep(1000);
 	system("cls");
 	return;
 }
+
 
 void loanMenu()
 {
 	int loanmoney;
 
 	system("cls");
+
 	titleLine("대  출");
+
 	printf("\n 얼마를 대출받으시겠습니까?");
+
 	scanf("%d", &loanmoney);
+
 	Loan(loanmoney);
 
 	return;
