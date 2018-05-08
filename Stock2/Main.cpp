@@ -15,10 +15,10 @@
 
 int main(void)
 {
-	int menu, cnt, order;
+	int cnt, order;
+	char menu;
 	char key, pausemenu;
-
-
+	
 	//Set window console
 	system("title Stock 2 - 주식 게임 2");
 
@@ -32,34 +32,41 @@ int main(void)
 	Init();
 
 	cnt = month = day = hour = order = 0;
+	menu = '\0';
 
 	PrintMainMenu();
-	scanf("%d", &menu);
 
-	switch (menu)
+	/* 시작 화면에서 사용자의 입력을 기다린다													*/
+	/* 1, 2를 입력하면 게임이 시작하고 3을 입력하면 프로그램을 종료 그 외의 키를 누르면 반복한다	*/
+	while (menu != '1' && menu != '2')
 	{
+		menu = getch();
 
-	case 1:
-		ChangeStockPrice();
-		Save();
-		break;
+		switch (menu)
+		{
 
-	case 2:
-		Load();
-		break;
+		case '1':
+			ChangeStockPrice();
+			Save();
+			break;
 
-	case 3:
-		return -1;
+		case '2':
+			Load();
+			break;
 
-	default:
-		//TODO: if user enter default value, program should announce 'it's wrong value
-		break;
+		case '3':
+			return -1;
+
+		default:
+			break;
+		}
 	}
 
 	system("cls");
 
 	DrawNewspaper(companyOrder[order]);
 
+	/* 게임 루프 */
 	while (true)
 	{
 		ShowMain();
