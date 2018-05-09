@@ -1,4 +1,3 @@
-
 #define DEFAULT_COLOR 7 
 
 typedef enum {

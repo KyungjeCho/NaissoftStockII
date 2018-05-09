@@ -1,5 +1,5 @@
 #include "Lib.h"
 
-void startLogo();
+void StartLogo();
 
-void printMainMenu();
+void PrintMainMenu();

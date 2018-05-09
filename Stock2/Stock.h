@@ -1,19 +1,18 @@
-
 struct Stock
 {
 	int price;
 	int company;
 	bool ifChecked;
-
-	Stock *next;
+	
 	Stock *prev;
+	Stock *next;
 };
 
 extern Stock *head, *now, tmp;
 
 void InitStock();
 
-Stock *InsertStock(Stock *Target, Stock *aStock);
+Stock *InsertStock(Stock *pTarget, Stock *aStock);
 
 bool DeleteStock(Stock *Target);
 
@@ -21,4 +20,4 @@ void AppendStock(Stock);
 
 Stock *FindStock(int);
 
-void UnInitStock();
+void DeallocateStock();

@@ -21,7 +21,7 @@ extern int month, day, hour, achour;
 extern char *Tips[MAX_TIP], *GoodNews[MAX_NEWS], *BadNews[MAX_NEWS];
 extern int days[12];
 
-extern int StockPrice[MAX_COMPANY], PrevStockPrice[MAX_COMPANY], Stocks, StockDeal, loanMoney;
+extern int StockPrice[MAX_COMPANY], prevStockPrice[MAX_COMPANY], Stocks, StockDeal, loanMoney;
 extern unsigned long Money;
 extern bool ifGood[MAX_COMPANY];
 extern char *CompanyName[MAX_COMPANY];
@@ -29,25 +29,25 @@ extern Stock *head, *now, tmp;
 
 extern int viewmode, timemode;
 
-void init();
+void Init();
 
 void ShowMain();
 
-void load();
+void Load();
 
-void save();
+void Save();
 
-void showTipNews();
+void ShowTipNews();
 
-void buyMenu(int);
+void BuyMenu(int order);
 
-void sellMenu();
+void SellMenu(void);
 
 void showStats();
 
 void getKey(char *);
 
-void settingMenu();
+void ChangeGameMode();
 
 void loanMenu();
 
@@ -57,4 +57,4 @@ void DrawGraph(int);
 
 void showCompanyReport(int);
 
-void drawNewspaper(int);
+void DrawNewspaper(int);

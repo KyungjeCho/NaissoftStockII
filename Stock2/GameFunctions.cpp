@@ -1,8 +1,23 @@
+/*========================================================*/
+/* Source : Main.cpp                                      */
+/* Purpose : Call game functions to proceed with the game */
+/*                                                        */
+/* Author : Naissoft                                      */
+/*                                                        */
+/* Modify settingMenu() function to proceed slowly        */
+/* Change function name  settingMenu -> ChangeGameMenu    */
+/* Modified date : 4 May 2018 (KyungjeCho)                */
+/*========================================================*/
+
 #include "GameFunctions.h"
 
-int month, day, hour, achour;
+int month;
+int day;
+int hour;
+int achour; /* it is not used */
 
-int viewmode, timemode;
+int viewmode; /* 0 : default, 1 : descending, 2 : ascending */
+int timemode;
 
 char *Tips[MAX_TIP] =
 {
@@ -90,23 +105,35 @@ char *goodArticle[MAX_ARTICLE] =
 
 int days[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-void init()
+
+void Init()
 {
 	Money = DEF_MONEY;
-	for (int i = 0; i < MAX_COMPANY; i++) StockPrice[i] = 9000;
-	for (int i = 0; i < MAX_COMPANY; i++) ifGood[i] = true;
+
+	for (int i = 0; i < MAX_COMPANY; i++) 
+		StockPrice[i] = 9000;
+
+	for (int i = 0; i < MAX_COMPANY; i++) 
+		ifGood[i] = true;
+
 	Stocks = StockDeal = 0;
 	loanMoney = 0;
+
 	ChangeStockPrice();
+
 	hour++;
 	viewmode = timemode = 0;
 }
+
 
 void ShowMain()
 {
 	gotoxy(0, 1);
 	printf(" Stock II - Naissoft 주식 게임 2\n ver α 1.3.0128\n\n B 사기, S 팔기, V 목록, E 저장, I 회사 정보, 8 / 2 회사 선택, Esc 메뉴");
-	if (timemode == 1) printf("\n W 기다리기");
+
+	if (timemode == 1) 
+		printf("\n W 기다리기");
+
 	gotoxy(0, 5);
 	printf("\n 현재 내 돈 : %d원, 갚아야 할 돈 : %d원\n\n\n\n", Money, loanMoney);
 
@@ -116,7 +143,7 @@ void ShowMain()
 	printf("\n\n 이번 달 납부할 세금은 %d원입니다. %d일 남았습니다.\n", TAX(Money), days[month] - day);
 }
 
-void load()
+void Load()
 {
 	int stocks = 0;
 	Stock tmp;
@@ -124,7 +151,7 @@ void load()
 	FILE *save = fopen("save.ns3", "rb");
 	if (save == NULL)
 	{
-		init();
+		Init();
 		return;
 	}
 
@@ -136,7 +163,8 @@ void load()
 		now = head;
 
 		fscanf(save, "%d %d ", &tmp.company, &tmp.price);
-		tmp.company = _rotr(tmp.company, 1); tmp.price = _rotr(tmp.price, 1);
+		tmp.company = _rotr(tmp.company, 1); 
+		tmp.price = _rotr(tmp.price, 1);
 		InsertStock(now, &tmp);
 	}
 
@@ -153,13 +181,19 @@ void load()
 	}
 
 	fscanf(save, "%d %d %d %d %d %d %d %d %d", &Money, &loanMoney, &Stocks, &StockDeal, &month, &day, &hour, &viewmode, &timemode);
-	Money = _rotr(Money, 1); loanMoney = _rotr(loanMoney, 1); Stocks = _rotr(Stocks, 1);
-	StockDeal = _rotr(StockDeal, 1); month = _rotr(month, 1); day = _rotr(day, 1); hour = _rotr(hour, 1);
+
+	Money = _rotr(Money, 1);
+	loanMoney = _rotr(loanMoney, 1);
+	Stocks = _rotr(Stocks, 1);
+	StockDeal = _rotr(StockDeal, 1);
+	month = _rotr(month, 1); 
+	day = _rotr(day, 1); 
+	hour = _rotr(hour, 1);
 
 	fclose(save);
 }
 
-void save()
+void Save()
 {
 	int stocks = 0;
 	FILE *save = fopen("save.ns3", "wb");
@@ -182,100 +216,156 @@ void save()
 	fclose(save);
 }
 
-void showTipNews()
+void ShowTipNews()
 {
 	gotoxy(0, 8);
-	for (int i = 0; i < 80; i++) printf(" ");
+
+	for (int i = 0; i < 80; i++) 
+		printf(" ");
+
 	gotoxy(0, 8);
+
 	if (rand() % 4 == 0)
+	{
 		printf(" 팁 : %s", Tips[rand() % MAX_TIP]);
+	}
 	else
 	{
 		int comp = rand() % MAX_COMPANY;
-		if (ifGood[comp] == true) printf(" NEWS : %s%s", CompanyName[comp], GoodNews[rand() % MAX_NEWS]);
-		else printf(" NEWS : %s%s", CompanyName[comp], BadNews[rand() % MAX_NEWS]);
+
+		if (ifGood[comp] == true) 
+			printf(" NEWS : %s%s", CompanyName[comp], GoodNews[rand() % MAX_NEWS]);
+		else 
+			printf(" NEWS : %s%s", CompanyName[comp], BadNews[rand() % MAX_NEWS]);
 	}
 }
 
-void buyMenu(int order)
+/** Move a stock buy menu to buy stocks
+*
+* @param order
+* Company number to identify companies
+*
+* @return void
+*/
+void BuyMenu(int order)
 {
-	char ch;
-	int amount;
+	int amountOfStocks;
 
 	system("cls");
 	titleLine("주식 사기");
 
-	printf(" 현재 %s 회사의 주가는 %d원입니다.\n\n 몇 개를 구입하시겠습니까? (취소 : 0)", CompanyName[order], StockPrice[order]);
+	printf(" 현재 %s 회사의 주가는 %d원입니다.\n\n 몇 개를 구입하시겠습니까? (취소 : 0)"
+		, CompanyName[order], StockPrice[order]); 
 
-	scanf("%d", &amount);
-	if (amount > 0)
+	scanf("%d", &amountOfStocks);
+	if (amountOfStocks > 0)
 	{
-		buyStock(order, amount);
+		BuyStock(order, amountOfStocks);
 		printf("\n\n 구입하였습니다.");
 		Sleep(2000);
 	}
+
 	system("cls");
 	return;
 }
 
-void sellMenu()
+/** Move a stock sell menu to sell stocks
+*
+* @return void
+*/
+void SellMenu(void)
 {
-	char ch = '\0';
-	int idx, j, k;
-	k = idx = 1;
+	int idx;
+	int numberOfStocks;
+	int listPage;
+	int profitOnSale;
+	char key;
+	Stock *selectStock;
+
+	key = '\0';
+	listPage = idx = 1;
 	system("cls");
+
+	/* 유저는 A, D, W, S, B, Q 키를 입력합니다					*/
+	/* 주식은 한 페이지 당 10개 씩 출력합니다						*/
+	/* A키를 입력하면 이전 페이지를 출력합니다						*/
+	/* D키를 입력하면 다음 페이지를 출력합니다						*/
+	/* W키를 입력하면 현재 선택한 주식 위의 주식을 선택합니다		*/
+	/* S키를 입력하면 현재 선택한 주식 아래의 주식을 선택합니다		*/
+	/* B키를 입력하면 선택한 주식 판매합니다						*/
+	/* Q키를 입력하면 이 반복문을 중지합니다						*/
 	while (true)
 	{	
 		titleLine("주식 팔기");
 		printf("\n [ W / S로 팔 주식을 고르세요. A / D로 더 볼 수 있습니다. B를 누르면 팝니다. ]\n\n");
-		j = 1;
-		for (now = head->next; now; now = now->next)
+		
+		numberOfStocks = 1;
+
+		/* 주식 연결리스트를 순회하면서 가지고 있는 회사 주식 가격을 출력합니다 */
+		for (now = head->next; now != NULL; now = now->next)
 		{
-			if (j >= k && j < k + 10) printf("\n %d. 회사 : %-20s, 가격 : %d원", j, CompanyName[now->company], now->price);
-			j++;
+			/* 주식을 한 페이지 당 10개씩 출력합니다. */
+			if (numberOfStocks >= listPage && numberOfStocks < listPage + 10)
+				printf("\n %d. 회사 : %-20s, 가격 : %d원", numberOfStocks, CompanyName[now->company], now->price);
+
+			numberOfStocks++;
 		}
+
 		printf("\n 돌아가려면 Q를 누르세요.\n");
 		
-		Stock *f = FindStock(idx - 1);
-		if (f == NULL) {
+		selectStock = FindStock(idx - 1);
+		if (selectStock == NULL) {
 			system("cls");
 			return;
 		}	
-	
-		printf("\n [ 선택 주식 정보 ]\n\n 번호 : %d\n 회사 : %s\n 가격 : %d\n 현재 가격 : %d\n 매도 이익 : %d", idx, CompanyName[f->company], f->price, StockPrice[f->company], StockPrice[f->company] - f->price);
 		
-		ch = getch();
+		profitOnSale = StockPrice[selectStock->company] - selectStock->price;
+
+		printf("\n [ 선택 주식 정보 ]\n\n 번호 : %d\n 회사 : %s\n 가격 : %d\n 현재 가격 : %d\n 매도 이익 : %d"
+			, idx					, CompanyName[selectStock->company]
+			, selectStock->price	, StockPrice[selectStock->company]
+			, profitOnSale);
 		
-		switch (ch)
+		key = getch();
+		
+		switch (key)
 		{
+
 			case 'A':
 			case 'a':
-				if (k > 10) k -= 10;
+				if (listPage > 10)
+					listPage -= 10;
 				break;
+
 			case 'D':
 			case 'd':
-				k += 10;
+				listPage += 10;
 				break;
+
 			case 'W':
 			case 'w':
-				if (idx > 1) idx--;
+				if (idx > 1) 
+					idx--;
 				break;
+
 			case 'S':
 			case 's':
-				if (idx < j) idx++;
+				if (idx < numberOfStocks)
+					idx++;
 				break;
+
 			case 'Q':
 			case 'q':
 				system("cls");
 				return;
-				break;
+
 			case 'B':
 			case 'b':
-				sellStock(idx);
+				SellStock(idx);
 				break;
 		}
 		
-		ch = '\0';
+		key = '\0';
 		system("cls");
 	}
 }
@@ -293,70 +383,107 @@ void getKey(char *c)
 {
 	if (!timemode)
 	{
-		if (kbhit()) *c = getch();
+		if (kbhit()) 
+			*c = getch();
 	}
 	else *c = getch();
 }
 
-void settingMenu()
+
+/** Change view mode or time mode
+*
+* @return void
+*/
+void ChangeGameMode()
 {
 	char select;
+
 	system("cls");
+
 	titleLine("설  정");
-	printf(" 1. 보기 모드 전환\n 2. 시간 흐름 방식 전환\n Esc 돌아가기");
+
+	printf(	"%s%s%s",
+			" 1. 보기 모드 전환\n",
+			" 2. 시간 흐름 방식 전환\n",
+			" Esc 돌아가기");
 	
 	select = getch();
 
 	switch (select)
 	{
+
 	case '1':
 		viewmode++;
-		if (viewmode > 2) viewmode = 0;
+
+		if (viewmode > 2) 
+			viewmode = 0;
+
+		system("cls");
+
 		switch (viewmode)
 		{
+
 		case 0:
-			printf(" 보기 방식이 기본 모드로 전환되었습니다.");
+			printf("\n 보기 방식이 기본 모드로 전환되었습니다.");
 			break;
+
 		case 1:
-			printf(" 보기 방식이 내림차순 모드로 전환되었습니다.");
+			printf("\n 보기 방식이 내림차순 모드로 전환되었습니다.");
 			break;
+
 		case 2:
-			printf(" 보기 방식이 오름차순 모드로 전환되었습니다.");
+			printf("\n 보기 방식이 오름차순 모드로 전환되었습니다.");
 			break;
 		}
 		break;
+
 	case '2':
 		timemode++;
-		if (timemode > 1) timemode = 0;
+
+		if (timemode > 1) 
+			timemode = 0;
+
+		system("cls");
+
 		switch (timemode)
 		{
+
 		case 0:
-			printf(" 시간 흐름이 자동으로 전환되었습니다.");
+			printf("\n 시간 흐름이 자동으로 전환되었습니다.");
 			break;
+
 		case 1:
-			printf(" 시간 흐름이 수동으로 전환되었습니다.");
+			printf("\n 시간 흐름이 수동으로 전환되었습니다.");
 			break;
 		}
 		break;
+
 	case 27:
 		break;
+
 	default:
 		break;
 	}
-	Sleep(300);
+
+	Sleep(1000);
 	system("cls");
 	return;
 }
+
 
 void loanMenu()
 {
 	int loanmoney;
 
 	system("cls");
+
 	titleLine("대  출");
+
 	printf("\n 얼마를 대출받으시겠습니까?");
+
 	scanf("%d", &loanmoney);
-	loan(loanmoney);
+
+	Loan(loanmoney);
 
 	return;
 }
@@ -367,6 +494,7 @@ void showCompanyInfo()
 	char ch = '\0';
 
 	system("cls");
+
 	while (ch != 27)
 	{
 		system("cls");
@@ -380,21 +508,27 @@ void showCompanyInfo()
 
 		switch (ch)
 		{
+
 		case 'W':
 		case 'w':
-			if (i < MAX_COMPANY - 1) i++;
+			if (i < MAX_COMPANY - 1) 
+				i++;
 			break;
+
 		case 'S':
 		case 's':
-			if (i > 0) i--;
+			if (i > 0) 
+				i--;
 			break;
 		}
 	}
+
 	system("cls");
 }
 
 void DrawGraph(int company)
 {
+	int j = 0;
 
 	gotoxy(0, 25);
 	printf(" 24000                                                                     \n 22000                                                                     \n 20000                                                                     "
@@ -403,21 +537,28 @@ void DrawGraph(int company)
 		"\n  6000                                                                     \n  4000                                                                     \n  2000                                                                     \n                                                                              ");
 	gotoxy(7, 46);
 
-	int j = 0;
 	for (int i = 47; i >= 0; i--)
 	{
 		if (GraphData[company][i] > 0 && GraphData[company][i] < 26000)
 		{
 			gotoxy(7 + j, 36 - ((int)((GraphData[company][i] % 26000) / 2000) - 1));
-			if (GraphData[company][i] < 2000) printf("v");
-			else printf("*");
+
+			if (GraphData[company][i] < 2000)
+				printf("v");
+			else
+				printf("*");
+
 			j++;
 		}
 		else if (GraphData[company][i] >= 26000)
 		{
 			gotoxy(7 + j, 36 - ((int)(((GraphData[company][i] - 2000) % 24000) / 2000)));
-			if ((GraphData[company][i] - 2000) / 24000 + 1 > 9) printf("+");
-			else printf("%d", (GraphData[company][i] - 2000) / 24000 + 1);
+
+			if ((GraphData[company][i] - 2000) / 24000 + 1 > 9) 
+				printf("+");
+			else 
+				printf("%d", (GraphData[company][i] - 2000) / 24000 + 1);
+
 			j++;
 		}
 	}
@@ -430,6 +571,7 @@ void showCompanyReport(int company)
 		gotoxy(75, i);
 		printf("                     ");
 	}
+
 	gotoxy(75, 2);
 	printf("회사 : %s", CompanyName[company]);
 	gotoxy(75, 4);
@@ -438,14 +580,16 @@ void showCompanyReport(int company)
 	printf("전문가 의견 : %s", ifGood[company] ? "긍정적" : "부정적");
 }
 
-void drawNewspaper(int comp)
+void DrawNewspaper(int comp)
 {
 	textcolor(112);
 	
+	// x: 75 ~ 115, y: 10 ~ 35
 	for (int i = 0; i < 25; i++)
 	{
 		gotoxy(75, 10 + i);
-		for (int j = 0; j < 40; j++) putch(' ');
+		for (int j = 0; j < 40; j++) 
+			putch(' ');
 	}
 	
 	gotoxy(88, 12);
@@ -456,17 +600,22 @@ void drawNewspaper(int comp)
 	textcolor(15);
 	gotoxy(76, 14);
 	
-	if (ifGood[comp] == true) printf(" %s%s ", CompanyName[comp], goodHeadline[rand() % MAX_HEADLINE]);
-	else printf(" %s%s ", CompanyName[comp], badHeadline[rand() % MAX_HEADLINE]);
+	if (ifGood[comp] == true)
+		printf(" %s%s ", CompanyName[comp], goodHeadline[rand() % MAX_HEADLINE]);
+	else 
+		printf(" %s%s ", CompanyName[comp], badHeadline[rand() % MAX_HEADLINE]);
 	
 	textcolor(112);
 	gotoxy(76, 16);
+
 	if (ifGood[comp] == true)
 	{
 		int i = 0;
 		int articleNo = rand() % MAX_ARTICLE;
 		int cnt = 0;
+
 		printf(" %s", CompanyName[comp]);
+
 		while (goodArticle[articleNo][i] != '\0')
 		{
 			if (goodArticle[articleNo][i] == '\n')
@@ -474,7 +623,11 @@ void drawNewspaper(int comp)
 				cnt++;
 				gotoxy(76, 16 + cnt);
 			}
-			else putchar(goodArticle[articleNo][i]);
+			else
+			{
+				putchar(goodArticle[articleNo][i]);
+			}
+
 			i++;
 		}
 	}

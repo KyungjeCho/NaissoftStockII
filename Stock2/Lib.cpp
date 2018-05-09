@@ -4,16 +4,19 @@
 
 #include "Lib.h"
 
+
 void gotoxy(int x, int y)
 {
 	COORD pos = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+
 void textcolor(int color_number)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
 }
+
 
 void setcursortype(CURSOR_TYPE c)
 {
@@ -36,16 +39,19 @@ void setcursortype(CURSOR_TYPE c)
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &CurInfo);
 }
 
+
 void type_effect(char *str, int delay)
 {
 	int i = 0;
 	while (str[i] != '\0') printf("%c", str[i]), i++, Sleep(delay);
 }
 
+
 void clearbuffer()
 {
 	while (kbhit()) getch();
 }
+
 
 void titleLine(const char *title)
 {

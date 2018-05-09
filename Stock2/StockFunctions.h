@@ -7,22 +7,22 @@
 extern int companyOrder[MAX_COMPANY];
 extern int GraphData[MAX_COMPANY][48];
 
-void ChangeStockPrice();
+void ChangeStockPrice(void);
 
 void ShowStockPrice(int);
 
 void PrintStockPrice(int);
 
-void loan(int);
+void Loan(int);
 
-void interest();
+void Interest(void);
 
-void payback();
+void Payback();
 
-void buyStock(int, int);
+void BuyStock(int order, int amount);
 
-void sellStock(int);
+void SellStock(int);
 
-void showStockList();
+void ShowStockList(void);
 
-void UpdateGraphData();
+void UpdateGraphData(void);
